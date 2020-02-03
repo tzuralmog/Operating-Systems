@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <sys/resource.h>
 
-// need just a main function, no args
+
 
 int main(void)
 {
