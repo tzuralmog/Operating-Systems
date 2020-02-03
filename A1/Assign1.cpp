@@ -29,6 +29,7 @@ Number %d after spinning for more\n than %d %s loop iterations\n\n",
 
     printf("Loading prof program");
     fflush(stdout);
+    execl("./ProfProg","ProfProg",NULL);
 	exit(1);
 }
 
@@ -70,6 +71,7 @@ PARENT PROC:  Effective GID is:\t\t%d\n\
 PARENT PROC:  Process priority is:\t%d\n",
            pid, ppid, ruid, rgid, euid, egid, priority);
 
+    fflush(stdout);
 
 /*
     Fork to create child
@@ -143,6 +145,7 @@ CHILD PROC:  Process priority is:\t%d\n",
     
     read(sync_pipe[0], msg_buf, 10);
     printf("\nPARENT PROG: Killing child\n");
+    fflush(stdout);
     kill(pid, SIGTERM);
         
 
