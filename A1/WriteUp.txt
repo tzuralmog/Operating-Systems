@@ -7,3 +7,5 @@ Tzur_almog@student.uml.edu
 Was kind of hard until I reserched what all the commands did, then it was kind of easy.
 
 Took a lot of code from assignment 7 of the cs305 class.
+
+Totally messed up the first time, forgot to return the exit status of the chld

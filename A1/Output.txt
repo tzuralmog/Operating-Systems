@@ -1,40 +1,40 @@
 
 This is the Parent process report:
 
-PARENT PROG:  Process ID is:		12618
-PARENT PROC:  Process parent ID is:	11393
+PARENT PROG:  Process ID is:		24258
+PARENT PROC:  Process parent ID is:	4115
 PARENT PROC:  Real UID is:		19832
 PARENT PROC:  Real GID is:		2021
 PARENT PROC:  Effective UID is:		19832
 PARENT PROC:  Effective GID is:		2021
 PARENT PROC:  Process priority is:	0
 
-PARENT PROG: created Child with 12619 PID
-
-PARENT PROG: Killing child
-
 This is the Child process report:
 
-CHILD PROG:  Process ID is:		12619
-CHILD PROC:  Process parent ID is:	12618
+CHILD PROG:  Process ID is:		24261
+CHILD PROC:  Process parent ID is:	24258
 CHILD PROC:  Real UID is:		19832
 CHILD PROC:  Real GID is:		2021
 CHILD PROC:  Effective UID is:		19832
 CHILD PROC:  Effective GID is:		2021
 CHILD PROC:  Process priority is:	0
 
+PARENT PROG: created Child with 24261 PID
+
+PARENT PROG: Killing child
+
 
 CHILD PROC: Awake in handler - You Got Me With Signal
  Number 15 after spinning for more
- than 86868  loop iterations
+ than 36187  loop iterations
 
 Loading prof program
 This is the Prof process report:
 
 This is the Prof process report:
 
-PROF PROG:  Process ID is:		12619
-PROF PROG:  Process parent ID is:	7493
+PROF PROG:  Process ID is:		24261
+PROF PROG:  Process parent ID is:	24258
 PROF PROG:  Real UID is:		19832
 PROF PROG:  Real GID is:		2021
 PROF PROG:  Effective UID is:		19832
@@ -42,11 +42,18 @@ PROF PROG:  Effective GID is:		2021
 PROF PROG:  Process priority is:	5
 
 PROF PROG: going into and endless loop, use
- kill 12619   to kill me now
+ kill 24261   to kill me now
 
-// killed PROF PROG with command
+// User Killed Program
 
 PROF PROG: Awake in handler - You Got Me With Signal
  Number 15 after spinning for more
- than 4 Billion loop iterations, goodbye
+ than 2 Billion loop iterations, goodbye
 
+ PARENT PROG: Child Stats=
+    Exit status: 256
+    Exit signal: 0
+    Core Dump: 0
+    Exit Number: 1
+
+PARENT PROG: Child terminated by exit without a core dump

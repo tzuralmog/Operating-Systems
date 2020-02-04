@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <sys/resource.h>
+#include <sys/wait.h>
 
 int counter = 0, counter_2G = 0;
 
@@ -130,6 +131,7 @@ CHILD PROC:  Process priority is:\t%d\n",
                pid, ppid, ruid, rgid, euid, egid, priority);
 
         // write to parent
+        fflush(stdout);
         write(sync_pipe[1], "x", 10);
 
         // enter endless loop and wait for parent to terminate
@@ -147,8 +149,18 @@ CHILD PROC:  Process priority is:\t%d\n",
     printf("\nPARENT PROG: Killing child\n");
     fflush(stdout);
     kill(pid, SIGTERM);
-        
 
+    LE_Wait_Status Exit;
+    wait(&Exit.exit_status);
+   
+    printf(" PARENT PROG: Child Stats=\n\
+    Exit status: %d\n\
+    Exit signal: %d\n\
+    Core Dump: %d\n\
+    Exit Number: %d\n", Exit.exit_status , Exit.parts.sig_num,Exit.parts.core_dmp,Exit.parts.exit_num); 
+
+
+    printf("\nPARENT PROG: Child terminated by %s %s a core dump\n", ((Exit.parts.sig_num)?"signal":"exit"),((Exit.parts.core_dmp)?"with":"without"));
 
     exit(0);
 }
