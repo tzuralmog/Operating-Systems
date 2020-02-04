@@ -1,0 +1,9 @@
+Tzur Almog
+Tzur_almog@student.uml.edu
+
+
+100% completed
+
+Was kind of hard until I reserched what all the commands did, then it was kind of easy.
+
+Took a lot of code from assignment 7 of the cs305 class.
