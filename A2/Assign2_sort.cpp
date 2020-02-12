@@ -13,13 +13,6 @@
 
 int main( int argc, char *argv[] ){
 
-    //Incoming file
-    char filePoint[100];
-    filePoint[0]='.';
-    filePoint[1]='/';
-    for (int i = 0; i < 80; i++) { 
-        filePoint[i+2] = argv[1][i]; 
-    } 
 
     //Pipe variables
     char msg_buf[10] = "";
@@ -36,7 +29,7 @@ int main( int argc, char *argv[] ){
     if(fork() == 0){ 
         // create child to run ls   
         close(0);      
-        open(filePoint , O_RDONLY);
+        open("./cs308a2_sort_data" , O_RDONLY);
         close(1);      
         dup(sync_pipe[1]);
         close(sync_pipe[0]);
