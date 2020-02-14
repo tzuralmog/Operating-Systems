@@ -48,7 +48,7 @@ int main( int argc, char *argv[] ){
         close(child_to_parent_pipe[1]);
         close(parent_to_child_pipe[0]);
         close(parent_to_child_pipe[1]);     
-        execlp("grep", "grep", "123", NULL); 
+        execlp("grep", "grep", "-a" ,"123", NULL); 
         // exec ls program 
     }
 
@@ -60,8 +60,9 @@ int main( int argc, char *argv[] ){
 
     // parent sends to child info
     while(fgets(msg_buf, 80,fp) != NULL){
-        write(parent_to_child_pipe[0], msg_buf, 80);
+        write(parent_to_child_pipe[1], msg_buf, 80);
         printf("*");
+        // printf("%s",msg_buf);
         starcount++;
         if(starcount %80 == 0){
             printf("      Total stars = %d : Total data in bytes = %d\n",starcount,starcount*80);
@@ -81,15 +82,19 @@ int main( int argc, char *argv[] ){
     // print bougus recived data.
     printf("\nAll Data Sent\n\n");
 
+    // makes new char buffer to accept info from child pipe
+    char msg_bufn[100] = "";
+
     // parent reads
-    while(read(child_to_parent_pipe[0], msg_buf, 1)){
-        printf("%s",msg_buf);
-        if (msg_buf[0] == '\n'){
+    while(read(child_to_parent_pipe[0], msg_bufn, 1) ){
+        printf("%s",msg_bufn);
+        if(msg_bufn[0] == '\n'){
             newLine++;
         }
+
     }
 
-    printf("Total matching line count: %d\n", newLine);
+    printf("\nTotal matching line count: %d\n", newLine);
     exit(1);
 
 }

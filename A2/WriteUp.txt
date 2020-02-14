@@ -1,0 +1,13 @@
+Name: Tzur Almog
+
+
+I wrote all the code.
+
+Sort was hard, I had trouble working out where the pipes where supposed to go.
+
+Grep was easier, beccasue i did it earlier. 
+I also had a weird error where it took the input as a binary file so I had to add a flag to make it work.
+
+It also dosent work on the second grep file beccasse the size of the output causess a deadlock.
+
+10/10 , would not do again.

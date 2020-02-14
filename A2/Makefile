@@ -13,3 +13,4 @@ Assign2_sort.o: Assign2_sort.cpp
 						$(CC) $(CFLAGS)  Assign2_sort.cpp
 clean:
 						rm -f Assign2_grep  $(OBJECTS) Assign2_grep.hpp.gch Assign2_sort Assign2_sort.o Assign2_sort.gch
+						clear

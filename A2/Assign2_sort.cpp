@@ -15,47 +15,92 @@ int main( int argc, char *argv[] ){
 
 
     //Pipe variables
-    char msg_buf[10] = "";
-    int sync_pipe[2];
+    char msg_buf[100] = "";
+    int child_to_parent_pipe[2];
+    int parent_to_child_pipe[2];
+    int pfdout[2];
 
-    // use the pipe() system call to create the pipe
-
-    if (pipe(sync_pipe) == -1)
+    // use the pipe() system call to create the pipes
+    if (pipe(child_to_parent_pipe) == -1)
     {
-        perror("failed in Parent pipe creation:");
+        perror("failed in Child to Parent pipe creation:");
         exit(7);
+    }
+    if (pipe(parent_to_child_pipe) == -1)
+    {
+        perror("failed in Parent to Child pipe creation:");
+        exit(8);
+    }
+    if (pipe(pfdout) == -1)
+    {
+        perror("failed in file mimic pipe creation:");
+        exit(9);
     }
 
     if(fork() == 0){ 
         // create child to run ls   
         close(0);      
-        open("./cs308a2_sort_data" , O_RDONLY);
+        dup(parent_to_child_pipe[0]);
         close(1);      
-        dup(sync_pipe[1]);
-        close(sync_pipe[0]);
-        close(sync_pipe[1]);      
-        execlp("grep", "grep", "123", NULL); 
+        dup(child_to_parent_pipe[1]);
+        close(child_to_parent_pipe[0]);
+        close(child_to_parent_pipe[1]);
+        close(parent_to_child_pipe[0]);
+        close(parent_to_child_pipe[1]);     
+        execlp("sort", "sort","-k","3.3n","-k","1.1", "-k","2.2",  NULL); 
         // exec ls program 
     }
 
-    //close write pipe to prevent block
-    close(sync_pipe[1]);
     
-    //init newline counter
-    int newLine = 0;
 
-    // print bougus recived data.
-    printf("All Data Sent\n\n");
+    int a = 0;
+    a = open("./cs308a2_sort_data",O_RDONLY,0);
 
-    // parent reads
-    while(read(sync_pipe[0], msg_buf, 1)){
-        printf("%s",msg_buf);
-        if (msg_buf[0] == '\n'){
-            newLine++;
-        }
+
+    //close all pipes other than child to parent read pipe to prevent block
+    close(child_to_parent_pipe[1]);
+    close(parent_to_child_pipe[0]);
+
+    // reads sort output from child into other pipe
+    
+    int nread = 0;
+    while ((nread  = read (a, msg_buf, 80))){
+        write(parent_to_child_pipe[1],msg_buf,nread);
     }
 
-    printf("Total matching line count: %d\n", newLine);
+    // close parent to child pipe
+    close(parent_to_child_pipe[1]);
+
+    // print bougus recived data.
+    printf("\nAll Data Sent\n\n");
+
+    // converts pipe to file
+    FILE *fp = fdopen(child_to_parent_pipe[0], "r");
+
+    // counts areacode occurences
+    char lastname[100],firstname[100];
+    int areacode, oldareacode = 0, prefix, telenum, areacount = 0, record = 0;
+
+
+    while(fscanf(fp , "%s %s %d %d %d\n",lastname, firstname, &areacode, &prefix, &telenum) != EOF){
+        if( oldareacode == 0){
+            printf("First line = %s %s %d %d %d\n\n",lastname, firstname, areacode, prefix, telenum);
+            oldareacode = areacode;
+        }else if(oldareacode != areacode){
+            
+            printf("Area code %d occured %d times\n", oldareacode, areacount);
+            oldareacode = areacode;
+            areacount = 1;
+        }else{
+            areacount++;
+        }
+        record ++;
+    }
+    printf("Area code %d occured %d times\n", areacode, areacount);
+
+    printf("\nAll Data Recievied\n%d RECORDS PROCCESED \n",record);
+
+
     exit(1);
 
 }
